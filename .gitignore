@@ -1,0 +1,14 @@
+_credentials.py
+/src/code.jpeg
+test.py
+/.idea
+/venv
+/__pycache__
+/cropped_image
+/logs
+/cropped_success_image/
+/src/cropped_success_image/
+init.txt
+/getIssue.html
+/utils/AipOcr.py
+requirements.txt
