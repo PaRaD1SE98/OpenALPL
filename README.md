@@ -85,7 +85,7 @@ supervisor> update
 supervisor> 
 ```
 
-[使用docker部署并使用tensorflow-serving](#使用docker部署并使用tensorflow-serving)
+使用docker部署并使用tensorflow-serving
 ---
 ### 安装docker和docker-compose,并启动服务
 ```
