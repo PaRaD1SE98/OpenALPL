@@ -1,13 +1,10 @@
 广州车牌摇号小助手
 ===
-介绍
----
-你是否厌倦了常年摇号不中，还得定期去更新申请的繁琐步骤？那么这个项目也许能帮到你。
-本项目利用爬虫和机器学习图像识别实现了自动化获取广州车牌摇号官网的每个月摇号结果，能根据结果帮你自动更新摇号申请。每个月摇号结束后结果将以邮件形式发送到你指定的邮箱，如果你摇中了，程序会自动结束。
 
 基本用法
 ---
-### 本项目在CentOS7测试部署成功，建议使用相同系统增加部署成功率
+
+### 本文均用CentOS7部署，建议使用相同系统增加部署成功率
 ### 安装虚拟环境和依赖
 #### venv
 ```python -m venv venv```
@@ -15,16 +12,16 @@
 ```source venv/bin/activate```
 
 ```pip install -r requirements/base.txt```
-### 配置帐号
+### [配置账号](#配置账号)
 把```_credentials.sample```后缀改为```.py```并填入相关值
 
 ### 尝试运行定时任务
 运行```schedule.py```
 
-跑起来后配置帐号里填写的邮箱会收到服务启动邮件
+跑起来后配置账号里填写的邮箱会收到服务启动邮件
 
 ### 部署到linux服务器，用supervisor后台托管
-### 安装 supervisor
+### [安装supervisor](#安装supervisor)
 ```
 pip3 install supervisor
 ```
@@ -38,7 +35,7 @@ mkdir -p ~/etc/supervisor/var/log
 cd ~/etc
 echo_supervisord_conf > supervisord.conf
 ```
-修改配置文件 supervisor.conf，注意将路径改为符合自己系统的，下面的配置文件同理
+修改配置文件 supervisor.conf
 ```
 [unix_http_server]
 file=/home/parad1se/etc/supervisor/var/supervisor.sock   ; the path to the socket file
@@ -55,8 +52,8 @@ serverurl=unix:///home/parad1se/etc/supervisor/var/supervisor.sock ; use a unix:
 files = /home/parad1se/etc/supervisor/conf.d/*.ini
 ```
 
-### 创建 GZCPYHXZS 项目配置文件
-
+### [创建GZCPYHXZS项目配置文件](#创建GZCPYHXZS项目配置文件)
+```注意将路径改为符合自己系统的```
 ```
 cd /home/parad1se/etc/supervisor/conf.d
 sudo vim GZCPYHXZS.ini
@@ -73,11 +70,11 @@ user=parad1se
 stdout_logfile=/home/parad1se/etc/supervisor/var/log/GZCPYHXZS-stdout.log
 stderr_logfile=/home/parad1se/etc/supervisor/var/log/GZCPYHXZS-stderr.log
 ```
-##### 启动 supervisor
+##### 启动supervisor
 ```
 supervisord -c ~/etc/supervisord.conf
 ```
-##### 进入 supervisor 控制台
+##### 进入supervisor控制台
 ```
 supervisorctl -c ~/etc/supervisord.conf
 ```
@@ -86,6 +83,52 @@ supervisorctl -c ~/etc/supervisord.conf
 supervisor>
 supervisor> update
 supervisor> 
+```
+
+[使用docker部署并使用tensorflow-serving](#使用docker部署并使用tensorflow-serving)
+---
+### 安装docker和docker-compose,并启动服务
+```
+$ sudo yum install -y docker docker-compose
+sudo usermod -aG docker ${USER}
+$ sudo systemctl start docker
+```
+退出并重新连接服务器（这一步很重要）
+### 项目设置
+如果没有配置账号，请先[配置账号](#配置账号)
+在```settings.py```中添加或更改```ENABLE_TF_SERVING = True```
+### [supervisor设置](#supervisor设置)
+使用前面supervisor[安装](#安装supervisor)和[设置](#创建GZCPYHXZS项目配置文件)方法安装并配置， 将配置文件修改为
+```
+[program:GZCPYHXZS]
+command=docker-compose -f production.yml up --build  
+directory=/home/parad1se/apps/GZCPYHXZS
+autostart=true
+autorestart=unexpected
+user=parad1se
+stdout_logfile=/home/parad1se/etc/supervisor/var/log/GZCPYHXZS-stdout.log
+stderr_logfile=/home/parad1se/etc/supervisor/var/log/GZCPYHXZS-stderr.log
+```
+如果你已经用上面的方法部署好了，现在改为docker部署，需要执行```reread```和```update```使配置生效
+```
+$ supervisorctl -c ~/etc/supervisord.conf
+supervisor> reread
+supervisor> update
+```
+#### 如果容器不能启动，可以尝试重启服务器
+记得执行下面的命令启动docker和supervisor进程
+```
+$ sudo systemctl start docker
+$ supervisord -c ~/etc/supervisord.conf
+```
+#### 再执行下面的命令查看进程运行情况
+```
+$ supervisorctl -c ~/etc/supervisord.conf
+supervisor> status
+```
+#### 也可以进入[supervisor设置](#supervisor设置)里的stdout和stderr文件查看日志
+```
+vim /home/parad1se/etc/supervisor/var/log/GZCPYHXZS-stdout.log
 ```
 
 额外功能
