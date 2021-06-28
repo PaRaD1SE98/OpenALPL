@@ -1,0 +1,9 @@
+.*
+fabfile.py
+logs
+test.py
+/.idea
+/venv
+/__pycache__
+/cropped_success_image/
+/src/cropped_success_image/

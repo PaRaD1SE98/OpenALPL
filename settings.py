@@ -17,3 +17,8 @@ ENABLE_AUTO_SAVE_SUCCESS_IMAGE = False
 """
 设置登陆成功后是否自动保存验证码图片，训练好模型后可关闭节约磁盘空间
 """
+
+ENABLE_TF_SERVING = True
+"""
+使用tensorflow serving来预测结果，提高效率
+"""

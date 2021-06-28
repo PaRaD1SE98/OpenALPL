@@ -72,7 +72,7 @@ wrapper = BlockingScheduler()
 wrapper.add_job(
     schedule_wrapper,
     id="schedule_wrapper",
-    max_instances=1,
+    max_instances=5,
     replace_existing=True,
 )
 

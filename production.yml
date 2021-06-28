@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  gzcpyhxzs:
+    depends_on:
+      - tfserving
+    build:
+      context: .
+      dockerfile: compose/gzcpyhxzs/Dockerfile
+    image: gzcpyhxzs
+    container_name: gzcpyhxzs
+    networks:
+      - net
+    working_dir: /app
+    environment:
+      - TF_API_URL=http://tfserving:8501/v1/models/valid_code_serving_model/versions/1:predict
+    command: python schedule.py
+
+  tfserving:
+    image: tensorflow/serving:2.5.1
+    container_name: tfserving
+    networks:
+      - net
+    restart: unless-stopped
+    volumes:
+      - ./src/saved_model/valid_code_serving_model:/models/valid_code_serving_model/1
+    command: >
+      --rest_api_port=8501
+      --model_name=valid_code_serving_model
+      --model_base_path=/models/valid_code_serving_model
+networks:
+  net:

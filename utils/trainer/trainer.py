@@ -101,6 +101,10 @@ def train(source_cropped_image):
 
     # 将线性输出logits转换为概率输出
     probability_model = keras.Sequential([model, keras.layers.Softmax()])
+
+    # 保存tfserving模型
+    probability_model.save('src/saved_model/valid_code_serving_model')
+
     predictions = probability_model.predict(test_data)
 
     dot_img_file = 'src/saved_model/probability_model_1.png'

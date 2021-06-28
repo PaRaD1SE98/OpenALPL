@@ -1,10 +1,10 @@
 import os
-import tensorflow as tf
 import numpy as np
 from PIL import Image
 
-from settings import DEBUG
+from settings import DEBUG, ENABLE_TF_SERVING
 from utils.image_cropper import crop_jpeg
+from os import environ
 
 # np.set_printoptions(linewidth=np.inf, threshold=np.inf)
 
@@ -37,21 +37,31 @@ def get_classname():
 
 
 def predict():
-    model = tf.keras.models.load_model('src/saved_model/valid_code_model')
-
     #  构建数据
     crop_jpeg()
     data = np.ones((len(os.listdir('/tmp/cropped_image')), 46, 34))
-    for i, j in zip(os.listdir('/tmp/cropped_image'), range(len(os.listdir('/tmp/cropped_image')))):
+    for j, i in enumerate(os.listdir('/tmp/cropped_image')):
         image = Image.open(f'/tmp/cropped_image/{j}.JPEG')
         # print(f'/tmp/cropped_image/{j}.JPEG')
         image_arr = np.array(image)
         data[j, :, :] = image_arr / 255.0
     # print(data)
 
-    probability_model = tf.keras.Sequential([model, tf.keras.layers.Softmax()])
-
-    predictions = probability_model.predict(data)
+    if not ENABLE_TF_SERVING:
+        import tensorflow as tf
+        model = tf.keras.models.load_model('src/saved_model/valid_code_model')
+        predictions = model.predict(data)
+    else:
+        import requests
+        import json
+        headers = {"content-type": "application/json"}
+        data = json.dumps({"signature_name": "serving_default", "instances": data.tolist()})
+        json_response = requests.post(
+            environ['TF_API_URL'],
+            data=data,
+            headers=headers
+        )
+        predictions = json.loads(json_response.text)['predictions']
     return predictions
 
 
