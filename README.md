@@ -3,7 +3,7 @@
 
 #### 本文均用CentOS7部署，建议使用相同系统增加部署成功率
 
-[1.基本用法，直接使用python运行](#1基本用法直接使用python运行)
+1.基本用法，直接使用python运行
 ---
 
 ### 安装虚拟环境和依赖
@@ -13,7 +13,7 @@
 ```source venv/bin/activate```
 
 ```pip install -r requirements/base.txt```
-### [配置账号](#配置账号)
+### 配置账号
 把```_credentials.sample```后缀改为```.py```并填入相关值
 
 ### 尝试运行定时任务
@@ -22,7 +22,7 @@
 跑起来后配置账号里填写的邮箱会收到服务启动邮件
 
 ### 部署到linux服务器，用supervisor后台托管
-### [安装supervisor](#安装supervisor)
+### 安装supervisor
 ```
 pip3 install supervisor
 ```
@@ -53,7 +53,7 @@ serverurl=unix:///home/parad1se/etc/supervisor/var/supervisor.sock ; use a unix:
 files = /home/parad1se/etc/supervisor/conf.d/*.ini
 ```
 
-### [创建GZCPYHXZS项目配置文件](#创建GZCPYHXZS项目配置文件)
+### 创建GZCPYHXZS项目配置文件
 ```注意将路径改为符合自己系统的```
 ```
 cd /home/parad1se/etc/supervisor/conf.d
