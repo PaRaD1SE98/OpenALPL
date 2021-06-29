@@ -1,10 +1,11 @@
 广州车牌摇号小助手
 ===
 
-基本用法
+#### 本文均用CentOS7部署，建议使用相同系统增加部署成功率
+
+[1.基本用法，直接使用python运行](#基本用法)
 ---
 
-### 本文均用CentOS7部署，建议使用相同系统增加部署成功率
 ### 安装虚拟环境和依赖
 #### venv
 ```python -m venv venv```
@@ -85,17 +86,19 @@ supervisor> update
 supervisor> 
 ```
 
-使用docker部署并使用tensorflow-serving
+2.使用docker部署并使用tensorflow-serving
 ---
-### 安装docker和docker-compose,并启动服务
+#### 为了提高运行效率和稳定性，同时也为增加部署成功率，使用docker部署本项目
+### 安装docker和docker-compose,将当前用户添加到docker组，启动docker服务
 ```
 $ sudo yum install -y docker docker-compose
-sudo usermod -aG docker ${USER}
+$ sudo usermod -aG docker ${USER}
 $ sudo systemctl start docker
 ```
 退出并重新连接服务器（这一步很重要）
 ### 项目设置
 如果没有配置账号，请先[配置账号](#配置账号)
+
 在```settings.py```中添加或更改```ENABLE_TF_SERVING = True```
 ### [supervisor设置](#supervisor设置)
 使用前面supervisor[安装](#安装supervisor)和[设置](#创建GZCPYHXZS项目配置文件)方法安装并配置， 将配置文件修改为
@@ -109,14 +112,14 @@ user=parad1se
 stdout_logfile=/home/parad1se/etc/supervisor/var/log/GZCPYHXZS-stdout.log
 stderr_logfile=/home/parad1se/etc/supervisor/var/log/GZCPYHXZS-stderr.log
 ```
-如果你已经用上面的方法部署好了，现在改为docker部署，需要执行```reread```和```update```使配置生效
+如果你已经用[基本用法](#基本用法)部署好了，现在改为docker部署，需要执行```reread```和```update```使配置生效
 ```
 $ supervisorctl -c ~/etc/supervisord.conf
 supervisor> reread
 supervisor> update
 ```
 #### 如果容器不能启动，可以尝试重启服务器
-记得执行下面的命令启动docker和supervisor进程
+重启后记得执行下面的命令启动docker和supervisor进程
 ```
 $ sudo systemctl start docker
 $ supervisord -c ~/etc/supervisord.conf
