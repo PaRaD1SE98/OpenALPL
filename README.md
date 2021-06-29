@@ -3,7 +3,7 @@
 
 #### 本文均用CentOS7部署，建议使用相同系统增加部署成功率
 
-[1.基本用法，直接使用python运行](#基本用法)
+[1.基本用法，直接使用python运行](#1.基本用法，直接使用python运行)
 ---
 
 ### 安装虚拟环境和依赖
@@ -112,7 +112,7 @@ user=parad1se
 stdout_logfile=/home/parad1se/etc/supervisor/var/log/GZCPYHXZS-stdout.log
 stderr_logfile=/home/parad1se/etc/supervisor/var/log/GZCPYHXZS-stderr.log
 ```
-如果你已经用[基本用法](#基本用法)部署好了，现在改为docker部署，需要执行```reread```和```update```使配置生效
+如果你已经用[基本用法](#1.基本用法，直接使用python运行)部署好了，现在改为docker部署，需要执行```reread```和```update```使配置生效
 ```
 $ supervisorctl -c ~/etc/supervisord.conf
 supervisor> reread
