@@ -100,7 +100,7 @@ $ sudo systemctl start docker
 如果没有配置账号，请先[配置账号](#配置账号)
 
 在```settings.py```中添加或更改```ENABLE_TF_SERVING = True```
-### [supervisor设置](#supervisor设置)
+### supervisor设置
 使用前面supervisor[安装](#安装supervisor)和[设置](#创建GZCPYHXZS项目配置文件)方法安装并配置， 将配置文件修改为
 ```
 [program:GZCPYHXZS]
