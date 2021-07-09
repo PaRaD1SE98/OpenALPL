@@ -1,8 +1,8 @@
-FROM python:3.9.5
+FROM python:3.9.5-slim-buster
 
 ENV PYTHONUNBUFFERED 1
 
-RUN apt update && apt install libgl1-mesa-glx -y
+RUN apt-get update && apt-get install libglib2.0-0 libgl1-mesa-glx -y
 
 WORKDIR /app
 
