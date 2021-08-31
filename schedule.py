@@ -36,7 +36,7 @@ def job_function():
 # 定义阻塞式调度器的任务，使用阻塞式调度器管理后台调度器
 def schedule_wrapper():
     # 定义后台调度器
-    scheduler = BackgroundScheduler()
+    scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
 
     # 添加任务
     scheduler.add_job(
@@ -49,17 +49,19 @@ def schedule_wrapper():
             month='*',
             hour='*',
             minute='*',
-            second='0/10'
+            second='0/10',
+            timezone="Asia/Shanghai"
         ) if DEBUG else CronTrigger(
             year='*',
             month='*',
             day=DO_JOB_DAY,
             hour=DO_JOB_HOUR,
             minute='0',
-            second='0'
+            second='0',
+            timezone="Asia/Shanghai"
         ),
         id="search_and_update_job",
-        max_instances=5,
+        max_instances=10,
         replace_existing=True,
     )
     # 任务开始前开始时先立即执行一次
@@ -68,7 +70,7 @@ def schedule_wrapper():
 
 
 # 定义阻塞式调度器，配置任务
-wrapper = BlockingScheduler()
+wrapper = BlockingScheduler(timezone="Asia/Shanghai")
 wrapper.add_job(
     schedule_wrapper,
     id="schedule_wrapper",

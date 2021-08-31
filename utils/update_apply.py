@@ -22,8 +22,7 @@ def update_apply():
         except IndexError:
             # print(repr(IndexError))
             print('延期确认成功，查看确认信息和申请状态')
-            confirm_note = \
-                wb_pg.xpath('/html/body/div[2]/div/div[2]/div[2]/div/table/tr[2]/td/div/p[2]/text()')[0]
+            confirm_note = wb_pg.xpath('//*[@class="confirmNote"]/text()')[1]
             confirm_note = confirm_note.replace('	', '').replace('\r', '').replace('\n', '')
             print('确认信息:', confirm_note)
 

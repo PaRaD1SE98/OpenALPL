@@ -27,8 +27,8 @@ def search():
     html = etree.HTML(wb_data)
 
     t_head = (
-        html.xpath('/html/body/div[2]/div/div/div[1]/div/table/tr[1]/td/table/tr[1]/th[1]/text()')[0],
-        html.xpath('/html/body/div[2]/div/div/div[1]/div/table/tr[1]/td/table/tr[1]/th[2]/text()')[0]
+        html.xpath('/html/body/div[2]/div/div/div[1]/div/table/tr[1]/td/table/tr/th[1]/text()')[0],
+        html.xpath('/html/body/div[2]/div/div/div[1]/div/table/tr[1]/td/table/tr/th[2]/text()')[0]
     )
     try:
         t_content = (
